@@ -73,13 +73,18 @@ func create_gradient_map():
 
 
 func generate_column_raycast(x: int, a: float, g_frame: Image):
-	var c_pos
+	var c_pos = player_pos
 	var c_color
 	var dist = MAX_RENDER_DISTANCE
+	var step_vector = RENDER_STEP_SIZE*Vector2(cos(a), sin(a))
+	
 	for c in range(1, MAX_RENDER_STEPS):
-		c_pos = (player_pos + c*RENDER_STEP_SIZE*Vector2(cos(a), sin(a))).clamp(Vector2i(0, 0), Vector2i(WIN_W, WIN_H))
+		c_pos += step_vector
+		c_pos.clamp(Vector2i(0, 0), Vector2i(WIN_W, WIN_H))
 		c_color = grid.get_pixelv(Vector2i(c_pos))
+		
 		g_frame.set_pixelv(Vector2i(c_pos), Color.WHITE)
+		
 		if c_color.a != 0:
 			dist = c * RENDER_STEP_SIZE
 			break
@@ -92,17 +97,19 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 	
 	if height > WIN_H:
 		var shrink = int((height - WIN_H) / 2.0 * WALL_SPRITE_TILE_SIZE / height)
-		var src_h = WALL_SPRITE_TILE_SIZE - shrink*2
-		
+		var src_h = WALL_SPRITE_TILE_SIZE - (shrink * 2)
 		src_data[x] = Vector2(shrink, src_h)
 	else:
 		src_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
 	
 	var cheaty_scaled = c_pos / WALL_TO_SCREEN_RATIO
 	cheaty_scaled = cheaty_scaled - (cheaty_scaled+Vector2(0.5, 0.5)).floor()
-	var hit_column = cheaty_scaled.x if abs(cheaty_scaled.x) > abs(cheaty_scaled.y) else cheaty_scaled.y
+	var hit_column = cheaty_scaled.x
+	if abs(cheaty_scaled.y) > abs(cheaty_scaled.x):
+		hit_column = cheaty_scaled.y
 	hit_column *= WALL_SPRITE_TILE_SIZE
-	hit_column = hit_column if hit_column > 0 else hit_column + WALL_SPRITE_TILE_SIZE
+	if hit_column < 0:
+		hit_column += WALL_SPRITE_TILE_SIZE
 	var texture_column = screen_tilemap.find(c_color) * WALL_SPRITE_TILE_SIZE + int(hit_column)
 	
 	screen_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
