@@ -3,6 +3,13 @@ extends Sprite2D
 const WIN_W = 512
 const WIN_H = 512
 
+# This ought to be bundled better with the source image
+const WALL_SPRITE_TILE_SIZE = 64
+const WALL_SPRITE_WIDTH_BY_TILE = 6
+const WALL_SPRITE_HEIGHT_BY_TILE = 1
+const WALL_SPRITE_WIDTH = WALL_SPRITE_TILE_SIZE * WALL_SPRITE_WIDTH_BY_TILE
+const WALL_SPRITE_HEIGHT = WALL_SPRITE_HEIGHT_BY_TILE * WALL_SPRITE_TILE_SIZE
+
 var display_data: Control
 signal player_position_changed(Vector2)
 signal player_move_change(Vector2)
@@ -29,6 +36,7 @@ var screen_tilemap: Array
 const MAX_RENDER_STEPS = 400
 const MAX_RENDER_DISTANCE = 640
 const RENDER_STEP_SIZE = float(MAX_RENDER_DISTANCE) / MAX_RENDER_STEPS
+const WALL_TO_SCREEN_RATIO = 32
 
 const FOV = PI/3
 const LOW_CAMERA_SPEED = 60*PI/180
@@ -36,6 +44,9 @@ const LOW_ACCELERATION = 5
 const HIGH_CAMERA_SPEED = 3*LOW_CAMERA_SPEED
 const HIGH_ACCELERATION = 3*LOW_ACCELERATION
 const DEACCELERATION_FACTOR = 0.9
+
+const PLAYER_START_POS = Vector2(3.456*32, 2.345*32)
+const PLAYER_START_ANGLE = 90 * PI / 180
 
 var player_pos: Vector2
 var player_angle: float
@@ -73,28 +84,28 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 			dist = c * RENDER_STEP_SIZE
 			break
 	
-	var height = int(WIN_H * 32 / (dist*cos(a - player_angle)))
+	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist*cos(a - player_angle)))
 	var start = (WIN_H - height) / 2.0
 	var line = Vector2(start, height).clamp(Vector2(0, 0), Vector2(WIN_H, WIN_H))
 	
 	screen_data[x] = line
 	
 	if height > WIN_H:
-		var shrink = int((height - WIN_H) * 64.0 / height / 2) # 64.0 and 2 are kept apart for clarity
-		var src_h = 64 - shrink*2
+		var shrink = int((height - WIN_H) / 2.0 * WALL_SPRITE_TILE_SIZE / height)
+		var src_h = WALL_SPRITE_TILE_SIZE - shrink*2
 		
 		src_data[x] = Vector2(shrink, src_h)
 	else:
-		src_data[x] = Vector2(0, 64)
+		src_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
 	
-	var cheaty_scaled = c_pos / 32.0
+	var cheaty_scaled = c_pos / WALL_TO_SCREEN_RATIO
 	cheaty_scaled = cheaty_scaled - (cheaty_scaled+Vector2(0.5, 0.5)).floor()
 	var hit_column = cheaty_scaled.x if abs(cheaty_scaled.x) > abs(cheaty_scaled.y) else cheaty_scaled.y
-	hit_column *= 64
-	hit_column = hit_column if hit_column > 0 else hit_column + 64
-	var texture_column = screen_tilemap.find(c_color) * 64 + int(hit_column)
+	hit_column *= WALL_SPRITE_TILE_SIZE
+	hit_column = hit_column if hit_column > 0 else hit_column + WALL_SPRITE_TILE_SIZE
+	var texture_column = screen_tilemap.find(c_color) * WALL_SPRITE_TILE_SIZE + int(hit_column)
 	
-	screen_tile_info[x] = clamp(texture_column, 0, 384)
+	screen_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
 
 
 # Should this be consolidated under a draw function?
@@ -126,14 +137,16 @@ func _ready():
 	grid.resize(WIN_H, WIN_H, Image.INTERPOLATE_NEAREST)
 	
 	wall_texture = load("res://images/walltext.png")
+	assert(wall_texture.get_height() == WALL_SPRITE_HEIGHT)
+	assert(wall_texture.get_width() == WALL_SPRITE_WIDTH)
 	
 	create_gradient_map()
 	gradient_display = $MapWindow
 	gradient_display.set_position(Vector2(WIN_W, 0))
 	gradient_display.set_texture(gradient_texture)
 	
-	player_pos = Vector2(3.456*32, 2.345*32)
-	player_angle = 90 * PI / 180
+	player_pos = PLAYER_START_POS
+	player_angle = PLAYER_START_ANGLE
 	
 	display_data = $DisplayControl
 	display_data.set_position(Vector2(0, WIN_H))
