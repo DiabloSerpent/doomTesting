@@ -28,7 +28,7 @@ var screen_tilemap: Array
 # 400 steps to check for walls, each step is 1.6 pixels
 const MAX_RENDER_STEPS = 400
 const MAX_RENDER_DISTANCE = 640
-const RENDER_STEP_SIZE = MAX_RENDER_DISTANCE / MAX_RENDER_STEPS
+const RENDER_STEP_SIZE = float(MAX_RENDER_DISTANCE) / MAX_RENDER_STEPS
 
 const FOV = PI/3
 const LOW_CAMERA_SPEED = 60*PI/180
