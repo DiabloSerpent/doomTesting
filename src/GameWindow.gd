@@ -38,14 +38,14 @@ const MAX_RENDER_DISTANCE = 640
 const RENDER_STEP_SIZE = float(MAX_RENDER_DISTANCE) / MAX_RENDER_STEPS
 const WALL_TO_SCREEN_RATIO = 32
 
-const FOV = PI/3
-const LOW_CAMERA_SPEED = 60*PI/180
+const FOV = PI / 3
+const LOW_CAMERA_SPEED = 60 * PI / 180
 const LOW_ACCELERATION = 5
-const HIGH_CAMERA_SPEED = 3*LOW_CAMERA_SPEED
-const HIGH_ACCELERATION = 3*LOW_ACCELERATION
+const HIGH_CAMERA_SPEED = 3 * LOW_CAMERA_SPEED
+const HIGH_ACCELERATION = 3 * LOW_ACCELERATION
 const DEACCELERATION_FACTOR = 0.9
 
-const PLAYER_START_POS = Vector2(3.456*32, 2.345*32)
+const PLAYER_START_POS = Vector2(3.456 * 32, 2.345 * 32)
 const PLAYER_START_ANGLE = 90 * PI / 180
 
 var player_pos: Vector2
@@ -63,7 +63,7 @@ func create_gradient_map():
 	# Draw the gradient_map
 	for y in WIN_H:
 		for x in WIN_W:
-			gradient.set_pixel(x, y, Color(float(y)/WIN_H, float(x)/WIN_W, 0))
+			gradient.set_pixel(x, y, Color(float(y) / WIN_H, float(x) / WIN_W, 0))
 	
 	# Draw the grid on top of the gradient texture
 	# A lil goofy, but whatevs
@@ -76,7 +76,7 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 	var c_pos = player_pos
 	var c_color
 	var dist = MAX_RENDER_DISTANCE
-	var step_vector = RENDER_STEP_SIZE*Vector2(cos(a), sin(a))
+	var step_vector = RENDER_STEP_SIZE * Vector2(cos(a), sin(a))
 	
 	for c in range(1, MAX_RENDER_STEPS):
 		c_pos += step_vector
@@ -89,7 +89,7 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 			dist = c * RENDER_STEP_SIZE
 			break
 	
-	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist*cos(a - player_angle)))
+	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist * cos(a - player_angle)))
 	var start = (WIN_H - height) / 2.0
 	var line = Vector2(start, height).clamp(Vector2(0, 0), Vector2(WIN_H, WIN_H))
 	
@@ -197,10 +197,10 @@ func _process(delta):
 	var up = ACCELERATION if Input.is_physical_key_pressed(KEY_W) else 0
 	var down = ACCELERATION if Input.is_physical_key_pressed(KEY_S) else 0
 	
-	player_move += Vector2(left-right, up-down) * delta
+	player_move += Vector2(left - right, up - down) * delta
 	player_move *= DEACCELERATION_FACTOR
 	
-	player_pos += player_move.rotated(player_angle-PI/2)
+	player_pos += player_move.rotated(player_angle - (PI / 2))
 	
 	# This seems kinda inconvenient but whatevs
 	player_position_changed.emit(player_pos)
