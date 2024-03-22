@@ -3,7 +3,7 @@ extends Sprite2D
 const WIN_W = 512
 const WIN_H = 512
 
-# This ought to be bundled better with the source image
+# This ought to be bundled more closely with the source image
 const WALL_SPRITE_TILE_SIZE = 64
 const WALL_SPRITE_WIDTH_BY_TILE = 6
 const WALL_SPRITE_HEIGHT_BY_TILE = 1
