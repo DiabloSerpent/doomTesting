@@ -164,7 +164,7 @@ func _ready():
 	
 	src_data = PackedVector2Array()
 	src_data.resize(WIN_W)
-	src_data.fill(Vector2i(0, 64))
+	src_data.fill(Vector2i(0, WALL_SPRITE_TILE_SIZE))
 	
 	screen_tile_info = []
 	screen_tile_info.resize(WIN_W)
