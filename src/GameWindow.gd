@@ -197,7 +197,7 @@ func _process(delta):
 	var up = ACCELERATION if Input.is_physical_key_pressed(KEY_W) else 0
 	var down = ACCELERATION if Input.is_physical_key_pressed(KEY_S) else 0
 	
-	player_move += Vector2(left - right, up - down) * delta
+	player_move += Vector2((left - right), (up - down)) * delta
 	player_move *= DEACCELERATION_FACTOR
 	
 	player_pos += player_move.rotated(player_angle - (PI / 2))
