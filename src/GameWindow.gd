@@ -81,9 +81,9 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 	for c in range(1, MAX_RENDER_STEPS):
 		c_pos += step_vector
 		c_pos.clamp(Vector2i(0, 0), Vector2i(WIN_W, WIN_H))
-		c_color = grid.get_pixelv(Vector2i(c_pos))
+		c_color = grid.get_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)))
 		
-		g_frame.set_pixelv(Vector2i(c_pos), Color.WHITE)
+		g_frame.set_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)), Color.WHITE)
 		
 		if c_color.a != 0:
 			dist = c * RENDER_STEP_SIZE
