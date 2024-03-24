@@ -27,7 +27,7 @@ var gradient_display: Sprite2D
 
 var screen_col_data: PackedVector2Array
 var src_col_data: PackedVector2Array
-var src_tile_info: Array
+var src_tile_data: Array
 
 var screen_tilemap: Array
 
@@ -110,9 +110,9 @@ func _ready():
 	src_col_data.resize(WIN_W)
 	src_col_data.fill(Vector2i(0, WALL_SPRITE_TILE_SIZE))
 	
-	src_tile_info = []
-	src_tile_info.resize(WIN_W)
-	src_tile_info.fill(0)
+	src_tile_data = []
+	src_tile_data.resize(WIN_W)
+	src_tile_data.fill(0)
 
 
 func _input(event):
@@ -170,7 +170,7 @@ func _draw():
 		draw_texture_rect_region(
 			wall_texture,
 			Rect2(x, screen_col_data[x].x, 1, screen_col_data[x].y),
-			Rect2(src_tile_info[x], src_col_data[x].x, 1, src_col_data[x].y)
+			Rect2(src_tile_data[x], src_col_data[x].x, 1, src_col_data[x].y)
 		)
 
 
@@ -225,4 +225,4 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 		hit_column += WALL_SPRITE_TILE_SIZE
 	var texture_column = screen_tilemap.find(c_color) * WALL_SPRITE_TILE_SIZE + int(hit_column)
 	
-	src_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
+	src_tile_data[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
