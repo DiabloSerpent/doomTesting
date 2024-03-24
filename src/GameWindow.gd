@@ -23,10 +23,9 @@ var gradient_display: Sprite2D
 # The main game is drawn directly canvas of the node.
 # No need for a specific image.
 
-# These could be replaced with PackedRectArrays
-var screen_data: PackedVector2Array
-var src_data: PackedVector2Array
-var screen_tile_info: Array
+var screen_col_data: PackedVector2Array
+var src_col_data: PackedVector2Array
+var src_tile_info: Array
 
 var screen_tilemap: Array
 
@@ -100,17 +99,17 @@ func _ready():
 	display_data = $DisplayControl
 	display_data.set_position(Vector2(0, WIN_H))
 	
-	screen_data = PackedVector2Array()
-	screen_data.resize(WIN_W)
-	screen_data.fill(Vector2i(0, 0))
+	screen_col_data = PackedVector2Array()
+	screen_col_data.resize(WIN_W)
+	screen_col_data.fill(Vector2i(0, 0))
 	
-	src_data = PackedVector2Array()
-	src_data.resize(WIN_W)
-	src_data.fill(Vector2i(0, WALL_SPRITE_TILE_SIZE))
+	src_col_data = PackedVector2Array()
+	src_col_data.resize(WIN_W)
+	src_col_data.fill(Vector2i(0, WALL_SPRITE_TILE_SIZE))
 	
-	screen_tile_info = []
-	screen_tile_info.resize(WIN_W)
-	screen_tile_info.fill(0)
+	src_tile_info = []
+	src_tile_info.resize(WIN_W)
+	src_tile_info.fill(0)
 
 
 func _input(event):
@@ -167,8 +166,8 @@ func _draw():
 	for x in WIN_H:
 		draw_texture_rect_region(
 			wall_texture,
-			Rect2(x, screen_data[x].x, 1, screen_data[x].y),
-			Rect2(screen_tile_info[x], src_data[x].x, 1, src_data[x].y)
+			Rect2(x, screen_col_data[x].x, 1, screen_col_data[x].y),
+			Rect2(src_tile_info[x], src_col_data[x].x, 1, src_col_data[x].y)
 		)
 
 
@@ -191,10 +190,10 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 	
 	for c in range(1, MAX_RENDER_STEPS):
 		c_pos += step_vector
-		c_pos.clamp(Vector2i(0, 0), Vector2i(WIN_W, WIN_H))
-		c_color = grid.get_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)))
+		c_pos = c_pos.clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1))
+		c_color = grid.get_pixelv(Vector2i(c_pos))
 		
-		g_frame.set_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)), Color.WHITE)
+		g_frame.set_pixelv(Vector2i(c_pos), Color.WHITE)
 		
 		if c_color.a != 0:
 			dist = c * RENDER_STEP_SIZE
@@ -204,14 +203,14 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 	var start = (WIN_H - height) / 2.0
 	var line = Vector2(start, height).clamp(Vector2(0, 0), Vector2(WIN_H, WIN_H))
 	
-	screen_data[x] = line
+	screen_col_data[x] = line
 	
 	if height > WIN_H:
 		var shrink = int((height - WIN_H) / 2.0 * WALL_SPRITE_TILE_SIZE / height)
 		var src_h = WALL_SPRITE_TILE_SIZE - (shrink * 2)
-		src_data[x] = Vector2(shrink, src_h)
+		src_col_data[x] = Vector2(shrink, src_h)
 	else:
-		src_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
+		src_col_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
 	
 	var cheaty_scaled = c_pos / WALL_TO_SCREEN_RATIO
 	cheaty_scaled = cheaty_scaled - (cheaty_scaled+Vector2(0.5, 0.5)).floor()
@@ -223,4 +222,4 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 		hit_column += WALL_SPRITE_TILE_SIZE
 	var texture_column = screen_tilemap.find(c_color) * WALL_SPRITE_TILE_SIZE + int(hit_column)
 	
-	screen_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
+	src_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
