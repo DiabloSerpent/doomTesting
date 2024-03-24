@@ -12,4 +12,4 @@ func _on_position_change(p: Vector2):
 
 # Apparently you don't need to call queue_redraw() every frame
 func _draw():
-	draw_circle(drawn_player_pos, 3, Color.AQUA)
+	draw_circle(drawn_player_pos, 5, Color.AQUA)

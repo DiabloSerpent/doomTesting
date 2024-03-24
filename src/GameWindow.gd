@@ -164,9 +164,6 @@ func _draw():
 			Rect2(x, screen_data[x].x, 1, screen_data[x].y),
 			Rect2(screen_tile_info[x], src_data[x].x, 1, src_data[x].y)
 		)
-	
-	if gradient_display.visible:
-		draw_circle(gradient_display.position + player_pos, 5, Color.AQUA)
 
 
 func generate_frame():
