@@ -72,61 +72,6 @@ func create_gradient_map():
 	gradient_texture = ImageTexture.create_from_image(gradient)
 
 
-func generate_column_raycast(x: int, a: float, g_frame: Image):
-	var c_pos = player_pos
-	var c_color
-	var dist = MAX_RENDER_DISTANCE
-	var step_vector = RENDER_STEP_SIZE * Vector2(cos(a), sin(a))
-	
-	for c in range(1, MAX_RENDER_STEPS):
-		c_pos += step_vector
-		c_pos.clamp(Vector2i(0, 0), Vector2i(WIN_W, WIN_H))
-		c_color = grid.get_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)))
-		
-		g_frame.set_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)), Color.WHITE)
-		
-		if c_color.a != 0:
-			dist = c * RENDER_STEP_SIZE
-			break
-	
-	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist * cos(a - player_angle)))
-	var start = (WIN_H - height) / 2.0
-	var line = Vector2(start, height).clamp(Vector2(0, 0), Vector2(WIN_H, WIN_H))
-	
-	screen_data[x] = line
-	
-	if height > WIN_H:
-		var shrink = int((height - WIN_H) / 2.0 * WALL_SPRITE_TILE_SIZE / height)
-		var src_h = WALL_SPRITE_TILE_SIZE - (shrink * 2)
-		src_data[x] = Vector2(shrink, src_h)
-	else:
-		src_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
-	
-	var cheaty_scaled = c_pos / WALL_TO_SCREEN_RATIO
-	cheaty_scaled = cheaty_scaled - (cheaty_scaled+Vector2(0.5, 0.5)).floor()
-	var hit_column = cheaty_scaled.x
-	if abs(cheaty_scaled.y) > abs(cheaty_scaled.x):
-		hit_column = cheaty_scaled.y
-	hit_column *= WALL_SPRITE_TILE_SIZE
-	if hit_column < 0:
-		hit_column += WALL_SPRITE_TILE_SIZE
-	var texture_column = screen_tilemap.find(c_color) * WALL_SPRITE_TILE_SIZE + int(hit_column)
-	
-	screen_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
-
-
-# Should this be consolidated under a draw function?
-func generate_frame():
-	var gradient_frame = gradient_texture.get_image()
-	var start_angle = player_angle - (FOV / 2)
-	
-	for x in WIN_W:
-		var angle = start_angle + (FOV * x / WIN_W)
-		generate_column_raycast(x, angle, gradient_frame)
-	
-	gradient_display.set_texture(ImageTexture.create_from_image(gradient_frame))
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen = Image.create(WIN_W, WIN_H, false, Image.FORMAT_RGBA8)
@@ -225,3 +170,57 @@ func _draw():
 	
 	if gradient_display.visible:
 		draw_circle(gradient_display.position + player_pos, 5, Color.AQUA)
+
+
+func generate_frame():
+	var gradient_frame = gradient_texture.get_image()
+	var start_angle = player_angle - (FOV / 2)
+	
+	for x in WIN_W:
+		var angle = start_angle + (FOV * x / WIN_W)
+		generate_column_raycast(x, angle, gradient_frame)
+	
+	gradient_display.set_texture(ImageTexture.create_from_image(gradient_frame))
+
+
+func generate_column_raycast(x: int, a: float, g_frame: Image):
+	var c_pos = player_pos
+	var c_color
+	var dist = MAX_RENDER_DISTANCE
+	var step_vector = RENDER_STEP_SIZE * Vector2(cos(a), sin(a))
+	
+	for c in range(1, MAX_RENDER_STEPS):
+		c_pos += step_vector
+		c_pos.clamp(Vector2i(0, 0), Vector2i(WIN_W, WIN_H))
+		c_color = grid.get_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)))
+		
+		g_frame.set_pixelv(Vector2i(c_pos).clamp(Vector2(0, 0), Vector2(WIN_W-1, WIN_H-1)), Color.WHITE)
+		
+		if c_color.a != 0:
+			dist = c * RENDER_STEP_SIZE
+			break
+	
+	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist * cos(a - player_angle)))
+	var start = (WIN_H - height) / 2.0
+	var line = Vector2(start, height).clamp(Vector2(0, 0), Vector2(WIN_H, WIN_H))
+	
+	screen_data[x] = line
+	
+	if height > WIN_H:
+		var shrink = int((height - WIN_H) / 2.0 * WALL_SPRITE_TILE_SIZE / height)
+		var src_h = WALL_SPRITE_TILE_SIZE - (shrink * 2)
+		src_data[x] = Vector2(shrink, src_h)
+	else:
+		src_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
+	
+	var cheaty_scaled = c_pos / WALL_TO_SCREEN_RATIO
+	cheaty_scaled = cheaty_scaled - (cheaty_scaled+Vector2(0.5, 0.5)).floor()
+	var hit_column = cheaty_scaled.x
+	if abs(cheaty_scaled.y) > abs(cheaty_scaled.x):
+		hit_column = cheaty_scaled.y
+	hit_column *= WALL_SPRITE_TILE_SIZE
+	if hit_column < 0:
+		hit_column += WALL_SPRITE_TILE_SIZE
+	var texture_column = screen_tilemap.find(c_color) * WALL_SPRITE_TILE_SIZE + int(hit_column)
+	
+	screen_tile_info[x] = clamp(texture_column, 0, WALL_SPRITE_WIDTH)
