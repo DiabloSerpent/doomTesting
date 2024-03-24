@@ -52,6 +52,7 @@ var player_angle: float
 var player_move: Vector2
 var ACCELERATION = LOW_ACCELERATION
 var CAMERA_SPEED = LOW_CAMERA_SPEED
+var SPRINT_ON = false
 
 
 func create_gradient_map():
@@ -119,27 +120,33 @@ func _input(event):
 	
 	if event is InputEventKey:
 		if event.is_released() and event.keycode == KEY_F:
-			# Kinda cringe, don't sue me
-			ACCELERATION = LOW_ACCELERATION if ACCELERATION == HIGH_ACCELERATION else HIGH_ACCELERATION
-			CAMERA_SPEED = LOW_CAMERA_SPEED if ACCELERATION == HIGH_CAMERA_SPEED else HIGH_CAMERA_SPEED
+			if SPRINT_ON:
+				ACCELERATION = LOW_ACCELERATION
+				CAMERA_SPEED = LOW_CAMERA_SPEED
+			else:
+				ACCELERATION = HIGH_ACCELERATION
+				CAMERA_SPEED = HIGH_CAMERA_SPEED
+			
+			SPRINT_ON = not SPRINT_ON
+		
 		if event.is_released() and event.keycode == KEY_G:
 			gradient_display.visible = not gradient_display.visible
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var camera_left = CAMERA_SPEED if Input.is_physical_key_pressed(KEY_LEFT) else 0.0
-	var camera_right = CAMERA_SPEED if Input.is_physical_key_pressed(KEY_RIGHT) else 0.0
+	var camera_left = int(Input.is_physical_key_pressed(KEY_LEFT))
+	var camera_right = int(Input.is_physical_key_pressed(KEY_RIGHT))
 	
-	player_angle += (camera_right - camera_left) * delta
+	player_angle += (camera_right - camera_left) * CAMERA_SPEED * delta
 	
 	# Handle Input
-	var right = ACCELERATION if Input.is_physical_key_pressed(KEY_D) else 0
-	var left = ACCELERATION if Input.is_physical_key_pressed(KEY_A) else 0
-	var up = ACCELERATION if Input.is_physical_key_pressed(KEY_W) else 0
-	var down = ACCELERATION if Input.is_physical_key_pressed(KEY_S) else 0
+	var right = int(Input.is_physical_key_pressed(KEY_D))
+	var left = int(Input.is_physical_key_pressed(KEY_A))
+	var up = int(Input.is_physical_key_pressed(KEY_W))
+	var down = int(Input.is_physical_key_pressed(KEY_S))
 	
-	player_move += Vector2((left - right), (up - down)) * delta
+	player_move += Vector2((left - right), (up - down)) * ACCELERATION * delta
 	player_move *= DEACCELERATION_FACTOR
 	
 	player_pos += player_move.rotated(player_angle - (PI / 2))
