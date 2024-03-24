@@ -16,7 +16,6 @@ signal player_move_change(Vector2)
 
 var gradient: Image
 var grid: Image
-var screen: Image
 var wall_texture
 
 var screen_texture: ImageTexture
@@ -74,8 +73,6 @@ func create_gradient_map():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	screen = Image.create(WIN_W, WIN_H, false, Image.FORMAT_RGBA8)
-	
 	screen_tilemap = [
 		Color8(48, 96, 130),
 		Color8(255, 255, 255),
