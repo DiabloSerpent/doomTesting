@@ -14,15 +14,14 @@ var display_data: Control
 signal player_position_changed(Vector2)
 signal player_move_change(Vector2)
 
-var gradient: Image
 var grid: Image
-var wall_texture
+var wall_texture: Texture2D
 
-var screen_texture: ImageTexture
 var gradient_texture: ImageTexture
-
 var gradient_display: Sprite2D
-# The main game is drawn directly canvas of the sprite
+
+# The main game is drawn directly canvas of the node.
+# No need for a specific image.
 
 # These could be replaced with PackedRectArrays
 var screen_data: PackedVector2Array
@@ -58,7 +57,7 @@ var SPRINT_ON = false
 func create_gradient_map():
 	# This could all prolly be saved to a png or smth and have this function removed, but whatevs
 	
-	gradient = Image.create(WIN_W, WIN_H, false, Image.FORMAT_RGBA8)
+	var gradient = Image.create(WIN_W, WIN_H, false, Image.FORMAT_RGBA8)
 	
 	# Draw the gradient_map
 	for y in WIN_H:
