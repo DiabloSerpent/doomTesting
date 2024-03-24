@@ -10,6 +10,8 @@ const WALL_SPRITE_HEIGHT_BY_TILE = 1
 const WALL_SPRITE_WIDTH = WALL_SPRITE_TILE_SIZE * WALL_SPRITE_WIDTH_BY_TILE
 const WALL_SPRITE_HEIGHT = WALL_SPRITE_HEIGHT_BY_TILE * WALL_SPRITE_TILE_SIZE
 
+const GRID_SCALE_UP = 32
+
 var display_data: Control
 signal player_position_changed(Vector2)
 signal player_move_change(Vector2)
@@ -42,7 +44,7 @@ const HIGH_CAMERA_SPEED = 3 * LOW_CAMERA_SPEED
 const HIGH_ACCELERATION = 3 * LOW_ACCELERATION
 const DEACCELERATION_FACTOR = 0.9
 
-const PLAYER_START_POS = Vector2(3.456 * 32, 2.345 * 32)
+const PLAYER_START_POS = Vector2(3.456 * GRID_SCALE_UP, 2.345 * GRID_SCALE_UP)
 const PLAYER_START_ANGLE = 90 * PI / 180
 
 var player_pos: Vector2
@@ -82,7 +84,8 @@ func _ready():
 	]
 	
 	grid = load("res://images/TinyRendererMapColor.png").get_image()
-	grid.resize(WIN_H, WIN_H, Image.INTERPOLATE_NEAREST)
+	assert(grid.get_size() * GRID_SCALE_UP == Vector2i(WIN_W, WIN_H))
+	grid.resize(WIN_W, WIN_H, Image.INTERPOLATE_NEAREST)
 	
 	wall_texture = load("res://images/walltext.png")
 	assert(wall_texture.get_height() == WALL_SPRITE_HEIGHT)
@@ -212,8 +215,8 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 	else:
 		src_col_data[x] = Vector2(0, WALL_SPRITE_TILE_SIZE)
 	
-	var cheaty_scaled = c_pos / WALL_TO_SCREEN_RATIO
-	cheaty_scaled = cheaty_scaled - (cheaty_scaled+Vector2(0.5, 0.5)).floor()
+	var cheaty_scaled = c_pos / GRID_SCALE_UP
+	cheaty_scaled = cheaty_scaled - (cheaty_scaled + Vector2(0.5, 0.5)).floor()
 	var hit_column = cheaty_scaled.x
 	if abs(cheaty_scaled.y) > abs(cheaty_scaled.x):
 		hit_column = cheaty_scaled.y
