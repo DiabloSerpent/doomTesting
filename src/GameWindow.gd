@@ -76,6 +76,15 @@ var ACCELERATION = LOW_ACCELERATION
 var CAMERA_SPEED = LOW_CAMERA_SPEED
 var SPRINT_ON = false
 
+#  ENEMY STATE
+
+# follows format:  [(x, y), texture offset]
+var enemy_list = [
+	[Vector2(1.834, 8.765) * GRID_SCALE_UP, 0],
+	[Vector2(5.323, 5.365) * GRID_SCALE_UP, 1],
+	[Vector2(4.123, 10.265) * GRID_SCALE_UP, 1]
+]
+
 
 func create_gradient_map():
 	# This could all prolly be saved to a png or smth and have this function removed, but whatevs
