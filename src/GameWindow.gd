@@ -15,6 +15,7 @@ signal player_move_change(Vector2)
 
 var grid: Image
 var wall_texture: Texture2D
+var enemy_textures: Texture2D
 
 #  LOADED IMAGE CONSTANTS
 
@@ -25,6 +26,12 @@ const WALL_SPRITE_WIDTH_BY_TILE = 6
 const WALL_SPRITE_HEIGHT_BY_TILE = 1
 const WALL_SPRITE_WIDTH = WALL_SPRITE_TILE_SIZE * WALL_SPRITE_WIDTH_BY_TILE
 const WALL_SPRITE_HEIGHT = WALL_SPRITE_HEIGHT_BY_TILE * WALL_SPRITE_TILE_SIZE
+
+const ENEMY_TEX_TILE_SIZE = 64
+const ENEMY_TEX_TILE_WIDTH = 4
+const ENEMY_TEX_TILE_HEIGHT = 1
+const ENEMY_TEX_WIDTH = ENEMY_TEX_TILE_SIZE * ENEMY_TEX_TILE_WIDTH
+const ENEMY_TEX_HEIGHT = ENEMY_TEX_TILE_SIZE * ENEMY_TEX_TILE_HEIGHT
 
 #  DISPLAYED IMAGES
 
@@ -105,6 +112,10 @@ func _ready():
 	wall_texture = load("res://images/walltext.png")
 	assert(wall_texture.get_height() == WALL_SPRITE_HEIGHT)
 	assert(wall_texture.get_width() == WALL_SPRITE_WIDTH)
+	
+	enemy_textures = load("res://images/monsters.png")
+	assert(enemy_textures.get_height() == ENEMY_TEX_HEIGHT)
+	assert(enemy_textures.get_width() == ENEMY_TEX_WIDTH)
 	
 	create_gradient_map()
 	gradient_display = $MapWindow
