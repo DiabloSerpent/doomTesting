@@ -178,17 +178,6 @@ func _process(delta):
 	queue_redraw()
 
 
-func _draw():
-	draw_rect(Rect2(0, 0, WIN_W, WIN_H), Color.GRAY)
-	
-	for x in WIN_H:
-		draw_texture_rect_region(
-			wall_texture,
-			Rect2(x, screen_col_data[x].x, 1, screen_col_data[x].y),
-			Rect2(src_tile_data[x], src_col_data[x].x, 1, src_col_data[x].y)
-		)
-
-
 func generate_frame():
 	var gradient_frame = gradient_texture.get_image()
 	var start_angle = player_angle - (FOV / 2)
@@ -198,6 +187,17 @@ func generate_frame():
 		generate_column_raycast(x, angle, gradient_frame)
 	
 	gradient_display.set_texture(ImageTexture.create_from_image(gradient_frame))
+
+
+func _draw():
+	draw_rect(Rect2(0, 0, WIN_W, WIN_H), Color.GRAY)
+	
+	for x in WIN_H:
+		draw_texture_rect_region(
+			wall_texture,
+			Rect2(x, screen_col_data[x].x, 1, screen_col_data[x].y),
+			Rect2(src_tile_data[x], src_col_data[x].x, 1, src_col_data[x].y)
+		)
 
 
 func generate_column_raycast(x: int, a: float, g_frame: Image):
