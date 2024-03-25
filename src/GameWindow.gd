@@ -30,7 +30,7 @@ const WALL_SPRITE_HEIGHT = WALL_SPRITE_HEIGHT_BY_TILE * WALL_SPRITE_TILE_SIZE
 
 var gradient_texture: ImageTexture
 var gradient_display: Sprite2D
-# The main game is drawn directly canvas of the node.
+# The main game is drawn directly on the canvas of the node.
 # No need for a specific image.
 
 #  DRAW INFORMATION
