@@ -1,43 +1,56 @@
 extends Sprite2D
 
+#  WINDOW SIZE
+
 const WIN_W = 512
 const WIN_H = 512
 
-# This ought to be bundled more closely with the source image
+#  DISPLAY PLAYER INFO
+
+var display_data: Control
+signal player_position_changed(Vector2)
+signal player_move_change(Vector2)
+
+#  LOADED IMAGES
+
+var grid: Image
+var wall_texture: Texture2D
+
+#  IMAGE CONSTANTS
+
+const GRID_SCALE_UP = 32
+
 const WALL_SPRITE_TILE_SIZE = 64
 const WALL_SPRITE_WIDTH_BY_TILE = 6
 const WALL_SPRITE_HEIGHT_BY_TILE = 1
 const WALL_SPRITE_WIDTH = WALL_SPRITE_TILE_SIZE * WALL_SPRITE_WIDTH_BY_TILE
 const WALL_SPRITE_HEIGHT = WALL_SPRITE_HEIGHT_BY_TILE * WALL_SPRITE_TILE_SIZE
 
-const GRID_SCALE_UP = 32
-
-var display_data: Control
-signal player_position_changed(Vector2)
-signal player_move_change(Vector2)
-
-var grid: Image
-var wall_texture: Texture2D
+#  DISPLAYED IMAGES
 
 var gradient_texture: ImageTexture
 var gradient_display: Sprite2D
-
 # The main game is drawn directly canvas of the node.
 # No need for a specific image.
+
+#  DRAW INFORMATION
 
 var screen_col_data: PackedVector2Array
 var src_col_data: PackedVector2Array
 var src_tile_data: Array
-
 var screen_tilemap: Array
+
+#  RENDERING CONSTANTS
 
 # 400 steps to check for walls, each step is 1.6 pixels
 const MAX_RENDER_STEPS = 400
 const MAX_RENDER_DISTANCE = 640
 const RENDER_STEP_SIZE = float(MAX_RENDER_DISTANCE) / MAX_RENDER_STEPS
 const WALL_TO_SCREEN_RATIO = 32
-
 const FOV = PI / 3
+
+#  PLAYER CONSTANTS
+
 const LOW_CAMERA_SPEED = 60 * PI / 180
 const LOW_ACCELERATION = 5
 const HIGH_CAMERA_SPEED = 3 * LOW_CAMERA_SPEED
@@ -46,6 +59,8 @@ const DEACCELERATION_FACTOR = 0.9
 
 const PLAYER_START_POS = Vector2(3.456 * GRID_SCALE_UP, 2.345 * GRID_SCALE_UP)
 const PLAYER_START_ANGLE = 90 * PI / 180
+
+#  PLAYER STATE
 
 var player_pos: Vector2
 var player_angle: float
