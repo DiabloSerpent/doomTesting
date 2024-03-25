@@ -147,10 +147,10 @@ func _process(delta):
 	var up = int(Input.is_physical_key_pressed(KEY_W))
 	var down = int(Input.is_physical_key_pressed(KEY_S))
 	
-	player_move += Vector2((left - right), (up - down)) * ACCELERATION * delta
+	player_move += Vector2((up - down), (right - left)) * ACCELERATION * delta
 	player_move *= DEACCELERATION_FACTOR
 	
-	player_pos += player_move.rotated(player_angle - (PI / 2))
+	player_pos += player_move.rotated(player_angle)
 	
 	# This seems kinda inconvenient but whatevs
 	player_position_changed.emit(player_pos)
