@@ -16,7 +16,7 @@ signal player_move_change(Vector2)
 var grid: Image
 var wall_texture: Texture2D
 
-#  IMAGE CONSTANTS
+#  LOADED IMAGE CONSTANTS
 
 const GRID_SCALE_UP = 32
 
