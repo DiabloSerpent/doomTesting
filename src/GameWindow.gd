@@ -8,8 +8,8 @@ const WIN_H = 512
 #  DISPLAY PLAYER INFO
 
 var display_data: Control
-signal player_position_changed(Vector2)
-signal player_move_change(Vector2)
+signal player_position_changed(pos)
+signal player_move_change(move)
 
 #  LOADED IMAGES
 
