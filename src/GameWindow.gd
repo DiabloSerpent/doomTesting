@@ -69,12 +69,24 @@ const PLAYER_START_ANGLE = 90 * PI / 180
 
 #  PLAYER STATE
 
-var player_pos: Vector2
-var player_angle: float
-var player_move: Vector2
-var ACCELERATION = LOW_ACCELERATION
-var CAMERA_SPEED = LOW_CAMERA_SPEED
-var SPRINT_ON = false
+class Player:
+	var pos: Vector2
+	var angle: float
+	var move: Vector2
+	
+	var acc: float
+	var turn_speed: float
+	var is_sprinting: bool
+	
+	func _init(p, a):
+		pos = p
+		angle = a
+		move = Vector2(0, 0)
+		acc = LOW_ACCELERATION
+		turn_speed = LOW_CAMERA_SPEED
+		is_sprinting = false
+
+var player = Player.new(PLAYER_START_POS, PLAYER_START_ANGLE)
 
 #  ENEMY STATE
 
@@ -141,9 +153,6 @@ func _ready():
 	gradient_display.set_position(Vector2(WIN_W, 0))
 	gradient_display.set_texture(gradient_texture)
 	
-	player_pos = PLAYER_START_POS
-	player_angle = PLAYER_START_ANGLE
-	
 	display_data = $DisplayControl
 	display_data.set_position(Vector2(0, WIN_H))
 	
@@ -168,14 +177,14 @@ func _input(event):
 	
 	if event is InputEventKey:
 		if event.is_released() and event.keycode == KEY_F:
-			if SPRINT_ON:
-				ACCELERATION = LOW_ACCELERATION
-				CAMERA_SPEED = LOW_CAMERA_SPEED
+			if player.is_sprinting:
+				player.acc = LOW_ACCELERATION
+				player.turn_speed = LOW_CAMERA_SPEED
 			else:
-				ACCELERATION = HIGH_ACCELERATION
-				CAMERA_SPEED = HIGH_CAMERA_SPEED
+				player.acc = HIGH_ACCELERATION
+				player.turn_speed = HIGH_CAMERA_SPEED
 			
-			SPRINT_ON = not SPRINT_ON
+			player.is_sprinting = not player.is_sprinting
 		
 		if event.is_released() and event.keycode == KEY_G:
 			gradient_display.visible = not gradient_display.visible
@@ -186,7 +195,7 @@ func _process(delta):
 	var camera_left  = int(Input.is_physical_key_pressed(KEY_LEFT))
 	var camera_right = int(Input.is_physical_key_pressed(KEY_RIGHT))
 	
-	player_angle += (camera_right - camera_left) * CAMERA_SPEED * delta
+	player.angle += (camera_right - camera_left) * player.turn_speed * delta
 	
 	# Handle Input
 	var right = int(Input.is_physical_key_pressed(KEY_D))
@@ -194,14 +203,14 @@ func _process(delta):
 	var up    = int(Input.is_physical_key_pressed(KEY_W))
 	var down  = int(Input.is_physical_key_pressed(KEY_S))
 	
-	player_move += Vector2((up - down), (right - left)) * ACCELERATION * delta
-	player_move *= DEACCELERATION_FACTOR
+	player.move += Vector2((up - down), (right - left)) * player.acc * delta
+	player.move *= DEACCELERATION_FACTOR
 	
-	player_pos += player_move.rotated(player_angle)
+	player.pos += player.move.rotated(player.angle)
 	
 	# This seems kinda inconvenient but whatevs
-	player_position_changed.emit(player_pos)
-	player_move_change.emit(player_move)
+	player_position_changed.emit(player.pos)
+	player_move_change.emit(player.move)
 	
 	# Generate frame information
 	generate_frame()
@@ -212,7 +221,7 @@ func _process(delta):
 
 func generate_frame():
 	var gradient_frame = gradient_texture.get_image()
-	var start_angle = player_angle - (FOV / 2)
+	var start_angle = player.angle - (FOV / 2)
 	
 	for x in WIN_W:
 		var angle = start_angle + (FOV * x / WIN_W)
@@ -233,7 +242,7 @@ func _draw():
 
 
 func generate_column_raycast(x: int, a: float, g_frame: Image):
-	var c_pos = player_pos
+	var c_pos = player.pos
 	var c_color
 	var dist = MAX_RENDER_DISTANCE
 	var step_vector = RENDER_STEP_SIZE * Vector2(cos(a), sin(a))
@@ -249,7 +258,7 @@ func generate_column_raycast(x: int, a: float, g_frame: Image):
 			dist = c * RENDER_STEP_SIZE
 			break
 	
-	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist * cos(a - player_angle)))
+	var height = int(WIN_H * WALL_TO_SCREEN_RATIO / (dist * cos(a - player.angle)))
 	var start = (WIN_H - height) / 2.0
 	var line = Vector2(start, height).clamp(Vector2(0, 0), Vector2(WIN_H, WIN_H))
 	
