@@ -37,3 +37,5 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("6_ahnqo")
+
+[connection signal="enemy_update" from="." to="MapWindow" method="_on_game_window_enemy_update"]
