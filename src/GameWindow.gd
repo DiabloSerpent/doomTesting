@@ -93,6 +93,8 @@ var enemy_list = [
 	Enemy.new(Vector2(4.123, 10.265) * GRID_SCALE_UP, 1)
 ]
 
+signal enemy_update(array)
+
 
 func create_gradient_map():
 	# This could all prolly be saved to a png or smth and have this function removed, but whatevs
@@ -156,6 +158,8 @@ func _ready():
 	src_tile_data = []
 	src_tile_data.resize(WIN_W)
 	src_tile_data.fill(0)
+	
+	enemy_update.emit(enemy_list)
 
 
 func _input(event):
