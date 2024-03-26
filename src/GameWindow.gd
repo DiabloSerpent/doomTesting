@@ -47,9 +47,6 @@ var src_col_data: PackedVector2Array
 var src_tile_data: Array
 var screen_tilemap: Array
 
-var enemy_screen_col_data: Array
-var enemy_src_col_data: Array
-
 #  RENDERING CONSTANTS
 
 # 400 steps to check for walls, each step is 1.6 pixels
@@ -197,9 +194,6 @@ func _process(delta):
 	# Generate frame information
 	generate_frame()
 	
-	# Generate enemy information
-	generate_enemy_draw_data()
-	
 	# Update screen
 	queue_redraw()
 
@@ -215,10 +209,6 @@ func generate_frame():
 	gradient_display.set_texture(ImageTexture.create_from_image(gradient_frame))
 
 
-func generate_enemy_draw_data():
-	pass
-
-
 func _draw():
 	draw_rect(Rect2(0, 0, WIN_W, WIN_H), Color.GRAY)
 	
@@ -228,9 +218,6 @@ func _draw():
 			Rect2(x, screen_col_data[x].x, 1, screen_col_data[x].y),
 			Rect2(src_tile_data[x], src_col_data[x].x, 1, src_col_data[x].y)
 		)
-	
-	for e in enemy_list:
-		draw_circle(e[0] + Vector2(WIN_W, 0), 6, Color.RED)
 
 
 func generate_column_raycast(x: int, a: float, g_frame: Image):
