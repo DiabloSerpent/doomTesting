@@ -78,11 +78,19 @@ var SPRINT_ON = false
 
 #  ENEMY STATE
 
-# follows format:  [(x, y), texture offset]
+class Enemy:
+	var pos: Vector2
+	# offset of enemy texture in terms of tiles
+	var tex_tile: int
+	
+	func _init(p, t):
+		pos = p
+		tex_tile = t
+
 var enemy_list = [
-	[Vector2(1.834, 8.765) * GRID_SCALE_UP, 0],
-	[Vector2(5.323, 5.365) * GRID_SCALE_UP, 1],
-	[Vector2(4.123, 10.265) * GRID_SCALE_UP, 1]
+	Enemy.new(Vector2(1.834, 8.765)  * GRID_SCALE_UP, 0),
+	Enemy.new(Vector2(5.323, 5.365)  * GRID_SCALE_UP, 1),
+	Enemy.new(Vector2(4.123, 10.265) * GRID_SCALE_UP, 1)
 ]
 
 
