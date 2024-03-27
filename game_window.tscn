@@ -1,11 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkhk81ty0ubi1"]
+[gd_scene load_steps=4 format=3 uid="uid://bkhk81ty0ubi1"]
 
 [ext_resource type="Script" path="res://src/GameWindow.gd" id="1_g2utl"]
 [ext_resource type="Script" path="res://src/MapWindow.gd" id="2_06l1s"]
-[ext_resource type="Script" path="res://src/DisplayControl.gd" id="3_jj0rd"]
-[ext_resource type="Script" path="res://src/PlayerData.gd" id="4_l81me"]
-[ext_resource type="Script" path="res://src/FPS.gd" id="5_3rv2y"]
-[ext_resource type="Script" path="res://src/PlayerMove.gd" id="6_ahnqo"]
+[ext_resource type="PackedScene" uid="uid://m0hesddqvi02" path="res://display_player_state.tscn" id="3_5a6l7"]
 
 [node name="GameWindow" type="Sprite2D"]
 script = ExtResource("1_g2utl")
@@ -13,29 +10,6 @@ script = ExtResource("1_g2utl")
 [node name="MapWindow" type="Sprite2D" parent="."]
 script = ExtResource("2_06l1s")
 
-[node name="DisplayControl" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("3_jj0rd")
-
-[node name="PlayerPos" type="Label" parent="DisplayControl"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("4_l81me")
-
-[node name="FPS" type="Label" parent="DisplayControl"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("5_3rv2y")
-
-[node name="PlayerMove" type="Label" parent="DisplayControl"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("6_ahnqo")
+[node name="DisplayControl" parent="." instance=ExtResource("3_5a6l7")]
 
 [connection signal="enemy_update" from="." to="MapWindow" method="_on_game_window_enemy_update"]

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://m0hesddqvi02"]
+
+[ext_resource type="Script" path="res://src/DisplayControl.gd" id="1_ko7xt"]
+[ext_resource type="Script" path="res://src/PlayerData.gd" id="2_k8glm"]
+[ext_resource type="Script" path="res://src/FPS.gd" id="3_jf7qw"]
+[ext_resource type="Script" path="res://src/PlayerMove.gd" id="4_seqnb"]
+
+[node name="DisplayControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ko7xt")
+
+[node name="PlayerPos" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("2_k8glm")
+
+[node name="FPS" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("3_jf7qw")
+
+[node name="PlayerMove" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("4_seqnb")
