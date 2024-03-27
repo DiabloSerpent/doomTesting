@@ -74,7 +74,7 @@ class Player:
 	var angle: float
 	var move: Vector2
 	
-	var acc: float
+	var accel: float
 	var turn_speed: float
 	var is_sprinting: bool
 	
@@ -178,10 +178,10 @@ func _input(event):
 	if event is InputEventKey:
 		if event.is_released() and event.keycode == KEY_F:
 			if player.is_sprinting:
-				player.acc = LOW_ACCELERATION
+				player.accel = LOW_ACCELERATION
 				player.turn_speed = LOW_CAMERA_SPEED
 			else:
-				player.acc = HIGH_ACCELERATION
+				player.accel = HIGH_ACCELERATION
 				player.turn_speed = HIGH_CAMERA_SPEED
 			
 			player.is_sprinting = not player.is_sprinting
@@ -203,7 +203,7 @@ func _process(delta):
 	var up    = int(Input.is_physical_key_pressed(KEY_W))
 	var down  = int(Input.is_physical_key_pressed(KEY_S))
 	
-	player.move += Vector2((up - down), (right - left)) * player.acc * delta
+	player.move += Vector2((up - down), (right - left)) * player.accel * delta
 	player.move *= DEACCELERATION_FACTOR
 	
 	player.pos += player.move.rotated(player.angle)
