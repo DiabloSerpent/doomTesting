@@ -82,9 +82,9 @@ class Player:
 		pos = p
 		angle = a
 		move = Vector2(0, 0)
-		acc = LOW_ACCELERATION
-		turn_speed = LOW_CAMERA_SPEED
-		is_sprinting = false
+		accel = HIGH_ACCELERATION
+		turn_speed = HIGH_CAMERA_SPEED
+		is_sprinting = true
 
 var player = Player.new(PLAYER_START_POS, PLAYER_START_ANGLE)
 
