@@ -109,18 +109,27 @@ signal enemy_update(array)
 
 
 func create_gradient_map():
-	# This could all prolly be saved to a png or smth and have this function removed, but whatevs
+	# This could all prolly be saved to a png or smth
+	# and have this function removed, but whatevs
 	
 	var gradient = Image.create(WIN_W, WIN_H, false, Image.FORMAT_RGBA8)
 	
 	# Draw the gradient_map
 	for y in WIN_H:
 		for x in WIN_W:
-			gradient.set_pixel(x, y, Color(float(y) / WIN_H, float(x) / WIN_W, 0))
+			gradient.set_pixel(
+				x, y,
+				Color(float(y) / WIN_H, float(x) / WIN_W, 0)
+			)
 	
 	# Draw the grid on top of the gradient texture
 	# A lil goofy, but whatevs
-	gradient.blit_rect_mask(grid, grid, Rect2(Vector2(0, 0), Vector2(WIN_W, WIN_H)), Vector2(0, 0))
+	gradient.blit_rect_mask(
+		grid,
+		grid,
+		Rect2(Vector2(0, 0),
+		Vector2(WIN_W, WIN_H)), Vector2(0, 0)
+	)
 	
 	gradient_texture = ImageTexture.create_from_image(gradient)
 
