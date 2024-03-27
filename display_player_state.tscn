@@ -8,24 +8,27 @@
 [node name="DisplayControl" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 script = ExtResource("1_ko7xt")
 
 [node name="PlayerPos" type="Label" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_right = 67.0
+offset_bottom = 26.0
+text = "Position:"
 script = ExtResource("2_k8glm")
-
-[node name="FPS" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("3_jf7qw")
 
 [node name="PlayerMove" type="Label" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_top = 20.0
+offset_right = 88.0
+offset_bottom = 46.0
+text = "Movement:"
 script = ExtResource("4_seqnb")
+
+[node name="FPS" type="Label" parent="."]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 32.0
+offset_bottom = 66.0
+text = "FPS:"
+script = ExtResource("3_jf7qw")
