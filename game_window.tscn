@@ -11,6 +11,5 @@ script = ExtResource("1_g2utl")
 script = ExtResource("2_06l1s")
 
 [node name="DisplayControl" parent="." instance=ExtResource("3_5a6l7")]
-anchors_preset = 0
 
 [connection signal="enemy_update" from="." to="MapWindow" method="_on_game_window_enemy_update"]
