@@ -148,7 +148,6 @@ func create_gradient_map():
 	gradient_texture = ImageTexture.create_from_image(gradient)
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_tilemap = [
 		Color8(48, 96, 130),
@@ -222,7 +221,6 @@ func _input(event):
 			gradient_display.visible = not gradient_display.visible
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# Handle Input
 	var camera_left  = int(Input.is_physical_key_pressed(KEY_LEFT))
