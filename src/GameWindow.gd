@@ -272,9 +272,11 @@ func generate_enemy_draw_data():
 		var sprite_dir = atan2(sprite_dist.y, sprite_dist.x)  # need rotation guard
 		sprite_dist = sprite_dist.length()
 		var sprite_size = WIN_H / sprite_dist * ENEMY_SCALE_UP
+		
 		var h_offset = (sprite_dir - player.angle) * WIN_W / FOV + (WIN_W - sprite_size) / 2.0
 		var v_offset = (WIN_H - sprite_size) / 2.0
 		var screen_offset = Vector2(h_offset, v_offset)
+		
 		enemy_screen_col_data[2 * e] = screen_offset
 		enemy_screen_col_data[2 * e + 1] = Vector2(sprite_size, sprite_size)
 		
