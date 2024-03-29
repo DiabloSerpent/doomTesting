@@ -5,8 +5,8 @@ extends Sprite2D
 const WIN_W = 512
 const WIN_H = 512
 
-const WIN_ZERO = Vector2(0, 0)
-const WIN_SIZE = Vector2(WIN_W, WIN_H)
+const WIN_ZERO = Vector2i(0, 0)
+const WIN_SIZE = Vector2i(WIN_W, WIN_H)
 
 #  DISPLAY PLAYER INFO
 
