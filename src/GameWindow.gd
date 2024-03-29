@@ -46,6 +46,12 @@ var gradient_display: Sprite2D
 
 #  DRAW INFORMATION
 
+class DrawColumn:
+	var src_tex: Texture2D
+	var screen_rect: Rect2
+	var src_rect: Rect2
+	var dist: float
+
 var screen_col_data: PackedVector2Array
 var src_col_data: PackedVector2Array
 var src_tile_data: Array
