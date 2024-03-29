@@ -224,12 +224,12 @@ func _input(event):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	# Handle Input
 	var camera_left  = int(Input.is_physical_key_pressed(KEY_LEFT))
 	var camera_right = int(Input.is_physical_key_pressed(KEY_RIGHT))
 	
 	player.angle += (camera_right - camera_left) * player.turn_speed * delta
 	
-	# Handle Input
 	var right = int(Input.is_physical_key_pressed(KEY_D))
 	var left  = int(Input.is_physical_key_pressed(KEY_A))
 	var up    = int(Input.is_physical_key_pressed(KEY_W))
