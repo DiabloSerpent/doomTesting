@@ -223,7 +223,7 @@ func _input(event):
 
 
 func _process(delta):
-	# Handle Input
+	#  Handle Input
 	var camera_left  = int(Input.is_physical_key_pressed(KEY_LEFT))
 	var camera_right = int(Input.is_physical_key_pressed(KEY_RIGHT))
 	
@@ -243,13 +243,13 @@ func _process(delta):
 	player_position_changed.emit(player.pos)
 	player_move_change.emit(player.move)
 	
-	# Generate frame information
+	#  Generate frame information
 	generate_frame()
 	
-	# Generate enemy information
+	#  Generate enemy information
 	generate_enemy_draw_data()
 	
-	# Update screen
+	#  Update screen
 	queue_redraw()
 
 
