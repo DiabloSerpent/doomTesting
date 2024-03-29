@@ -35,6 +35,7 @@ const ENEMY_TEX_TILE_WIDTH = 4
 const ENEMY_TEX_TILE_HEIGHT = 1
 const ENEMY_TEX_WIDTH = ENEMY_TEX_TILE_SIZE * ENEMY_TEX_TILE_WIDTH
 const ENEMY_TEX_HEIGHT = ENEMY_TEX_TILE_SIZE * ENEMY_TEX_TILE_HEIGHT
+const ENEMY_SCALE_UP = 32
 
 #  DISPLAYED IMAGES
 
@@ -49,6 +50,10 @@ var screen_col_data: PackedVector2Array
 var src_col_data: PackedVector2Array
 var src_tile_data: Array
 var screen_tilemap: Array
+
+var enemy_screen_col_data: Array
+var enemy_src_col_data: Array
+var enemy_sprite_data: Array
 
 #  RENDERING CONSTANTS
 
@@ -181,6 +186,15 @@ func _ready():
 	src_tile_data.fill(0)
 	
 	enemy_update.emit(enemy_list)
+	
+	# This is not what enemy_screen_col_data is intended for
+	enemy_screen_col_data = PackedVector2Array()
+	enemy_screen_col_data.resize(enemy_list.size() * 2)
+	enemy_screen_col_data.fill(Vector2i(0, 0))
+	
+	enemy_src_col_data = PackedVector2Array()
+	enemy_src_col_data.resize(WIN_W)
+	enemy_src_col_data.fill(Vector2i(0, ENEMY_TEX_TILE_HEIGHT))
 
 
 func _input(event):
@@ -227,6 +241,9 @@ func _process(delta):
 	# Generate frame information
 	generate_frame()
 	
+	# Generate enemy information
+	generate_enemy_draw_data()
+	
 	# Update screen
 	queue_redraw()
 
@@ -242,6 +259,26 @@ func generate_frame():
 	gradient_display.set_texture(ImageTexture.create_from_image(gradient_frame))
 
 
+func generate_enemy_draw_data():
+	for e in enemy_list.size():
+		var enemy = enemy_list[e]
+		var sprite_dist = enemy.pos - player.pos
+		var sprite_dir = atan2(sprite_dist.y, sprite_dist.x)  # need rotation guard
+		sprite_dist = sprite_dist.length()
+		var sprite_size = WIN_H / sprite_dist * ENEMY_SCALE_UP
+		var h_offset = (sprite_dir - player.angle) * WIN_W / FOV + (WIN_W - sprite_size) / 2.0
+		var v_offset = (WIN_H - sprite_size) / 2.0
+		var screen_offset = Vector2(h_offset, v_offset)
+		enemy_screen_col_data[2 * e] = screen_offset
+		enemy_screen_col_data[2 * e + 1] = Vector2(sprite_size, sprite_size)
+		
+		# sprite_dist = length between player(the camera) and enemy
+		# sprite_dir = angle between player and enemy from origin
+		# displayed_size = screen height / sprite_dist
+		# displayed_center = *math noises*
+		# displayed_offset = (center of screen) - (displayed_size / 2) + displayed_center
+
+
 func _draw():
 	draw_rect(Rect2(0, 0, WIN_W, WIN_H), Color.GRAY)
 	
@@ -250,6 +287,13 @@ func _draw():
 			wall_texture,
 			Rect2(x, screen_col_data[x].x, 1, screen_col_data[x].y),
 			Rect2(src_tile_data[x], src_col_data[x].x, 1, src_col_data[x].y)
+		)
+	
+	for e in enemy_list.size():
+		draw_texture_rect_region(
+			enemy_textures,
+			Rect2(enemy_screen_col_data[2*e], enemy_screen_col_data[2*e+1]),
+			Rect2(enemy_list[e].tex_tile * ENEMY_TEX_TILE_SIZE, 0, ENEMY_TEX_TILE_SIZE, ENEMY_TEX_TILE_SIZE)
 		)
 
 
