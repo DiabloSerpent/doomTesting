@@ -227,7 +227,12 @@ func _process(delta):
 	var camera_left  = int(Input.is_physical_key_pressed(KEY_LEFT))
 	var camera_right = int(Input.is_physical_key_pressed(KEY_RIGHT))
 	
+	# Keep player.angle between -PI and PI for enemy drawing logic
 	player.angle += (camera_right - camera_left) * player.turn_speed * delta
+	if player.angle > PI:
+		player.angle -= 2 * PI
+	if player.angle < -PI:
+		player.angle += 2 * PI
 	
 	var right = int(Input.is_physical_key_pressed(KEY_D))
 	var left  = int(Input.is_physical_key_pressed(KEY_A))
