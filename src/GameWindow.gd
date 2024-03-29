@@ -203,6 +203,7 @@ func _ready():
 
 
 func _input(event):
+	# Isn't it a lil' dumb that this doesn't process ALL input?
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 	
