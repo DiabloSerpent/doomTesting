@@ -54,7 +54,14 @@ class DrawColumn:
 var screen_col_data: PackedVector2Array
 var src_col_data: PackedVector2Array
 var src_tile_data: Array
-var screen_tilemap: Array
+var screen_tilemap = [
+	Color8(48, 96, 130),
+	Color8(255, 255, 255),
+	Color8(172, 50, 50),
+	Color8(69, 40, 60),
+	Color8(106, 190, 48),
+	Color8(153, 229, 80),
+]
 
 var enemy_screen_col_data: Array
 var enemy_src_col_data: Array
@@ -149,14 +156,6 @@ func create_gradient_map():
 
 
 func _ready():
-	screen_tilemap = [
-		Color8(48, 96, 130),
-		Color8(255, 255, 255),
-		Color8(172, 50, 50),
-		Color8(69, 40, 60),
-		Color8(106, 190, 48),
-		Color8(153, 229, 80),
-	]
 	
 	grid = load("res://images/TinyRendererMapColor.png").get_image()
 	assert(grid.get_size() * GRID_SCALE_UP == Vector2i(WIN_W, WIN_H))
