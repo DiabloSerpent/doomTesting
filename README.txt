@@ -11,7 +11,7 @@ TODO list:
 		- start/end pos
 		- texture orientation?
 		- vertical start/end? sounds complicated
-	- rooms need to have
+	- rooms need to have specfic enclosed polygons of walls, connections to other rooms
 - movement is very inconsistent at exotic FPS
 - The edge of wall tiles tend to be rendered strangely
 	- changing the amount of rendering loops changes how large this error is
