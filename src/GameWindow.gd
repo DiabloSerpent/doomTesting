@@ -289,6 +289,11 @@ func generate_frame():
 
 func generate_enemy_draw_data():
 	for e in enemy_list.size():
+		# At certain angles/positions, this code causes the sprite to be
+		# rendered in the wrong spot. It looks like it simply stops rendering,
+		# but I believe it is just calculating the offset to be wildly
+		# inaccurate. idk how to fix
+		
 		var enemy = enemy_list[e]
 		var sprite_dist = enemy.pos - player.pos
 		var sprite_dir = atan2(sprite_dist.y, sprite_dist.x)  # need rotation guard
@@ -308,6 +313,10 @@ func generate_enemy_draw_data():
 		# displayed_size = screen height / sprite_dist
 		# displayed_center = *math noises*
 		# displayed_offset = (center of screen) - (displayed_size / 2) + displayed_center
+		# screen_rect = displayed_offset, displayed_size clipped by window bounds
+		# src_rect = proportion of screen_rect that is actually displayed * ENEMY_TEX_TILE_SIZE
+		# 	can prolly put the enemy tile offset here as well
+		# split screen_rect and src_rect into columns somehow
 
 
 func _draw():
