@@ -6,3 +6,9 @@ TODO list:
 	- consolidate player state signals
 	- add proper levels using nodes to represent enemies/walls
 		- skull_enemy.tscn is kind of a start to this
+		- walls need:
+			- texture
+			- start/end pos
+			- texture orientation?
+			- vertical start/end? sounds complicated
+		- rooms need to have
