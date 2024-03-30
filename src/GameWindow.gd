@@ -156,6 +156,7 @@ func create_gradient_map():
 
 
 func _ready():
+	#  LOAD IMAGES
 	
 	grid = load("res://images/TinyRendererMapColor.png").get_image()
 	assert(grid.get_size() * GRID_SCALE_UP == Vector2i(WIN_W, WIN_H))
@@ -169,6 +170,8 @@ func _ready():
 	assert(enemy_textures.get_height() == ENEMY_TEX_HEIGHT)
 	assert(enemy_textures.get_width() == ENEMY_TEX_WIDTH)
 	
+	# POSITION NODES
+	
 	create_gradient_map()
 	gradient_display = $MapWindow
 	gradient_display.set_position(Vector2(WIN_W, 0))
@@ -176,6 +179,8 @@ func _ready():
 	
 	display_data = $DisplayControl
 	display_data.set_position(Vector2(0, WIN_H))
+	
+	# FILL DRAWING ARRAYS
 	
 	screen_col_data = PackedVector2Array()
 	screen_col_data.resize(WIN_W)
