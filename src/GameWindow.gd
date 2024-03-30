@@ -128,6 +128,15 @@ var enemy_list = [
 
 signal enemy_update(array)
 
+#  GLOBAL STATE
+
+# Surely this won't have any consequences in the future
+class GlobalState:
+	var player
+	var enemy_list
+
+var global_state = GlobalState.new()
+
 
 func create_gradient_map():
 	# This could all prolly be saved to a png or smth
@@ -194,8 +203,6 @@ func _ready():
 	src_tile_data.resize(WIN_W)
 	src_tile_data.fill(0)
 	
-	enemy_update.emit(enemy_list)
-	
 	# This is not what enemy_screen_col_data is intended for
 	enemy_screen_col_data = PackedVector2Array()
 	enemy_screen_col_data.resize(enemy_list.size() * 2)
@@ -204,6 +211,13 @@ func _ready():
 	enemy_src_col_data = PackedVector2Array()
 	enemy_src_col_data.resize(WIN_W)
 	enemy_src_col_data.fill(Vector2i(0, ENEMY_TEX_TILE_HEIGHT))
+	
+	# SET GLOBAL STATE
+	
+	global_state.player = player
+	global_state.enemy_list = enemy_list
+	
+	enemy_update.emit(enemy_list)
 
 
 func _input(event):
