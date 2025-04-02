@@ -17,3 +17,4 @@ TODO list:
 	- changing the amount of rendering loops changes how large this error is
 	- might have to do with the cheaty_scaled thing
 - enemy disappearing bug
+- move uid files out of src folder
