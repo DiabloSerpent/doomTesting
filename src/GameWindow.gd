@@ -7,6 +7,7 @@ const WIN_H = 512
 
 const WIN_ZERO = Vector2i(0, 0)
 const WIN_SIZE = Vector2i(WIN_W, WIN_H)
+const WIN_RECT = Rect2i(WIN_ZERO, WIN_SIZE)
 
 #  DISPLAY PLAYER INFO
 
