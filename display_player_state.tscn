@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://m0hesddqvi02"]
 
-[ext_resource type="Script" path="res://src/DisplayControl.gd" id="1_ko7xt"]
-[ext_resource type="Script" path="res://src/PlayerData.gd" id="2_k8glm"]
-[ext_resource type="Script" path="res://src/FPS.gd" id="3_jf7qw"]
-[ext_resource type="Script" path="res://src/PlayerMove.gd" id="4_seqnb"]
+[ext_resource type="Script" uid="uid://dssfkprjhc0mb" path="res://src/DisplayControl.gd" id="1_ko7xt"]
+[ext_resource type="Script" uid="uid://qjheq8mxkyjb" path="res://src/PlayerData.gd" id="2_k8glm"]
+[ext_resource type="Script" uid="uid://v641pyhvmroi" path="res://src/FPS.gd" id="3_jf7qw"]
+[ext_resource type="Script" uid="uid://cnfl5td3sbbnu" path="res://src/PlayerMove.gd" id="4_seqnb"]
 
 [node name="DisplayControl" type="Control"]
 layout_mode = 3

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bkhk81ty0ubi1"]
 
-[ext_resource type="Script" path="res://src/GameWindow.gd" id="1_g2utl"]
-[ext_resource type="Script" path="res://src/MapWindow.gd" id="2_06l1s"]
+[ext_resource type="Script" uid="uid://cilifyf7pb2g7" path="res://src/GameWindow.gd" id="1_g2utl"]
+[ext_resource type="Script" uid="uid://d3dre55mns600" path="res://src/MapWindow.gd" id="2_06l1s"]
 [ext_resource type="PackedScene" uid="uid://m0hesddqvi02" path="res://display_player_state.tscn" id="3_5a6l7"]
 
 [node name="GameWindow" type="Sprite2D"]
